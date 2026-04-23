@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual — Gestão de Financiamentos / Pré-Aprovado</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4 portrait; margin: 2cm 2.2cm; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a2332; font-size: 13px; line-height: 1.7; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    
+    .cover { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #1a2332 0%, #2563eb 100%); color: #fff; text-align: center; break-after: page; }
+    .cover h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    .cover h2 { font-size: 16px; font-weight: 400; opacity: 0.8; margin-bottom: 32px; }
+    .cover .badge { background: rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 20px; font-size: 12px; }
+
+    h1 { font-size: 22px; font-weight: 700; color: #1a2332; margin: 0 0 6px; }
+    h2 { font-size: 17px; font-weight: 700; color: #1a2332; margin: 28px 0 10px; break-after: avoid; }
+    h3 { font-size: 14px; font-weight: 600; color: #374151; margin: 18px 0 6px; break-after: avoid; }
+    p { margin: 0 0 10px; }
+    
+    .page { break-before: page; }
+    .avoid-break { break-inside: avoid; }
+    
+    .toc { margin: 20px 0 0; }
+    .toc-item { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dotted #d1d5db; font-size: 13.5px; }
+    .toc-item strong { color: #2563eb; }
+
+    .step-box { background: #f0f9ff; border-left: 3px solid #2563eb; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0 14px; break-inside: avoid; }
+    .step-num { display: inline-block; background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 11px; font-weight: 700; margin-right: 8px; }
+    
+    .warn-box { background: #fef2f2; border-left: 3px solid #dc2626; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0 14px; break-inside: avoid; }
+    .info-box { background: #f0fdf4; border-left: 3px solid #16a34a; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0 14px; break-inside: avoid; }
+    
+    .field-table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 12.5px; }
+    .field-table th { background: #f9fafb; text-align: left; padding: 8px 10px; border: 1px solid #e5e7eb; font-weight: 600; color: #6b7280; font-size: 11px; text-transform: uppercase; }
+    .field-table td { padding: 8px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+    
+    .badge-demo { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .badge-ativo { background: #dcfce7; color: #15803d; }
+    .badge-atraso { background: #fef2f2; color: #dc2626; }
+    .badge-encerrado { background: #f3f4f6; color: #6b7280; }
+    .badge-bloqueado { background: #fef2f2; color: #dc2626; }
+    .badge-avencer { background: #eff6ff; color: #2563eb; }
+    .badge-parcial { background: #fff7ed; color: #ea580c; }
+    .badge-pago { background: #dcfce7; color: #15803d; }
+
+    .footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #9ca3af; text-align: center; }
+    
+    ul, ol { margin: 6px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    
+    @media screen { 
+      body { max-width: 800px; margin: 0 auto; padding: 40px 32px; }
+      .cover { border-radius: 12px; margin-bottom: 40px; height: auto; padding: 80px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div style="font-size: 40px; margin-bottom: 20px;">📑</div>
+  <h1>Manual do Usuário</h1>
+  <h2>Gestão de Financiamentos / Pré-Aprovado</h2>
+  <div class="badge">CondoSuite — Módulo Crédito</div>
+  <div style="margin-top: 48px; opacity: 0.6; font-size: 12px;">
+    Versão 1.0 — Abril 2026<br>
+    Equipe de Tesouraria
+  </div>
+</div>
+
+<!-- SUMÁRIO -->
+<h1>Sumário</h1>
+<div class="toc">
+  <div class="toc-item"><span><strong>1.</strong> Visão Geral</span></div>
+  <div class="toc-item"><span><strong>2.</strong> Acesso à Funcionalidade</span></div>
+  <div class="toc-item"><span><strong>3.</strong> Lista de Contratos</span></div>
+  <div class="toc-item"><span><strong>4.</strong> Detalhe do Financiamento</span></div>
+  <div class="toc-item"><span><strong>5.</strong> Realizar Cobrança</span></div>
+  <div class="toc-item"><span><strong>6.</strong> Histórico de Baixas</span></div>
+  <div class="toc-item"><span><strong>7.</strong> Conciliação (CondoSuite × Omie)</span></div>
+  <div class="toc-item"><span><strong>8.</strong> Relatórios</span></div>
+  <div class="toc-item"><span><strong>9.</strong> Glossário de Status</span></div>
+  <div class="toc-item"><span><strong>10.</strong> Perguntas Frequentes</span></div>
+</div>
+
+<!-- 1. VISÃO GERAL -->
+<div class="page">
+<h1>1. Visão Geral</h1>
+<p>O módulo de <strong>Gestão de Financiamentos / Pré-Aprovado</strong> permite à equipe de Tesouraria gerenciar a quitação de parcelas de financiamento dos condomínios clientes da CondoConta.</p>
+<p>Com ele, você pode:</p>
+<ul>
+  <li>Consultar todos os contratos de financiamento e pré-aprovado ativos</li>
+  <li>Visualizar parcelas, vencimentos, juros e multas de cada contrato</li>
+  <li>Realizar cobranças integrais ou parciais diretamente do saldo em conta</li>
+  <li>Efetuar baixas sem cobrança (registro manual)</li>
+  <li>Acompanhar o histórico completo de cada operação</li>
+  <li>Verificar a conciliação entre CondoSuite e Omie</li>
+  <li>Exportar relatórios em CSV, XLSX e PDF</li>
+</ul>
+
+<div class="info-box">
+  <strong>Público-alvo:</strong> Analistas e supervisores da Tesouraria (Júlia, Mateus e equipe).
+</div>
+</div>
+
+<!-- 2. ACESSO -->
+<div class="page">
+<h1>2. Acesso à Funcionalidade</h1>
+
+<div class="step-box">
+  <span class="step-num">1</span> Acesse o <strong>CondoSuite</strong> e navegue até o menu <strong>Crédito → Pré-Aprovado</strong>.
+</div>
+<div class="step-box">
+  <span class="step-num">2</span> Na tela de Crédito Pré-Aprovado, clique na aba <strong>"Contratos"</strong> (ao lado de "Condomínios").
+</div>
+<div class="step-box">
+  <span class="step-num">3</span> Você verá três sub-abas: <strong>Lista de Contratos</strong>, <strong>Conciliação</strong> e <strong>Relatórios</strong>.
+</div>
+
+<p>As abas anteriores (Visão Geral, Fila C&R, Condomínios) continuam funcionando normalmente. A aba Contratos é a nova funcionalidade descrita neste manual.</p>
+</div>
+
+<!-- 3. LISTA DE CONTRATOS -->
+<div class="page">
+<h1>3. Lista de Contratos</h1>
+<p>A tela principal exibe todos os financiamentos/pré-aprovados em uma tabela com indicadores resumidos no topo.</p>
+
+<h2>3.1. Indicadores (KPIs)</h2>
+<p>No topo da tela, quatro cards exibem métricas atualizadas em tempo real, <strong>respeitando os filtros aplicados</strong>:</p>
+<table class="field-table">
+  <tr><th>Indicador</th><th>Descrição</th></tr>
+  <tr><td><strong>Contratos ativos</strong></td><td>Quantidade de contratos com status "Ativo"</td></tr>
+  <tr><td><strong>Volume em aberto</strong></td><td>Soma dos saldos residuais de contratos não encerrados</td></tr>
+  <tr><td><strong>Contratos em atraso</strong></td><td>Quantidade de contratos com status "Em atraso"</td></tr>
+  <tr><td><strong>Com saldo residual</strong></td><td>Contratos que possuem saldo residual pendente</td></tr>
+</table>
+
+<h2>3.2. Filtros Disponíveis</h2>
+<table class="field-table">
+  <tr><th>Filtro</th><th>Função</th></tr>
+  <tr><td><strong>Busca</strong></td><td>Pesquisa por nome do condomínio ou CNPJ</td></tr>
+  <tr><td><strong>Status</strong></td><td>Filtra por: Ativo, Em atraso, Encerrado, Bloqueado</td></tr>
+  <tr><td><strong>Carteira</strong></td><td>Filtra por: CondoConta, Quista, Vert</td></tr>
+  <tr><td><strong>Período (De / Até)</strong></td><td>Filtra contratos pelo próximo vencimento dentro do intervalo selecionado</td></tr>
+</table>
+
+<div class="info-box">
+  <strong>Dica:</strong> Os filtros de data impactam diretamente os 4 indicadores do topo. Use-os para analisar períodos específicos.
+</div>
+
+<h2>3.3. Colunas da Tabela</h2>
+<table class="field-table">
+  <tr><th>Coluna</th><th>Descrição</th></tr>
+  <tr><td>Condomínio</td><td>Nome e CNPJ do condomínio</td></tr>
+  <tr><td>Contrato / CCB</td><td>Número do contrato ou CCB</td></tr>
+  <tr><td>Carteira</td><td>Fundo/carteira (CondoConta, Quista, Vert)</td></tr>
+  <tr><td>Valor financiado</td><td>Valor total do financiamento</td></tr>
+  <tr><td>Parcelas</td><td>Pagas / Total</td></tr>
+  <tr><td>Próx. vencimento</td><td>Data do próximo vencimento</td></tr>
+  <tr><td>Status</td><td>Status atual do contrato</td></tr>
+  <tr><td>Saldo residual</td><td>Saldo total ainda pendente</td></tr>
+</table>
+
+<div class="step-box">
+  Clique em qualquer linha ou no botão <strong>"Ver detalhes"</strong> para acessar o detalhe do financiamento.
+</div>
+</div>
+
+<!-- 4. DETALHE DO FINANCIAMENTO -->
+<div class="page">
+<h1>4. Detalhe do Financiamento</h1>
+<p>Ao clicar em um contrato, você acessa a visão completa com o resumo e todas as parcelas.</p>
+
+<h2>4.1. Informações do Cabeçalho</h2>
+<p>O topo exibe: nome do condomínio, CNPJ, número do contrato, carteira, status geral e <strong>saldo atual na conta do condomínio</strong> (consulta em tempo real).</p>
+
+<div class="warn-box">
+  <strong>Conta Bloqueada:</strong> Se a conta do condomínio estiver bloqueada, um alerta vermelho será exibido com o motivo. Neste caso, não será possível realizar débitos.
+</div>
+
+<h2>4.2. Card "Resumo do Contrato"</h2>
+<table class="field-table">
+  <tr><th>Campo</th><th>Descrição</th></tr>
+  <tr><td>Valor financiado</td><td>Montante total do financiamento</td></tr>
+  <tr><td>Parcelas</td><td>Parcelas pagas / total</td></tr>
+  <tr><td>Total pago</td><td>Soma de todos os valores já pagos</td></tr>
+  <tr><td>Saldo residual</td><td>Soma dos saldos residuais de todas as parcelas</td></tr>
+  <tr><td>Início / Fim previsto</td><td>Período do contrato</td></tr>
+</table>
+
+<h2>4.3. Tabela de Parcelas</h2>
+<p>Cada linha representa uma parcela com as seguintes informações:</p>
+<table class="field-table">
+  <tr><th>Coluna</th><th>Descrição</th></tr>
+  <tr><td>Parcela</td><td>Número sequencial (ex: 003/012)</td></tr>
+  <tr><td>Vencimento</td><td>Data de vencimento da parcela</td></tr>
+  <tr><td>Valor original</td><td>Valor nominal da parcela</td></tr>
+  <tr><td>Juros / Multa</td><td>Encargos calculados automaticamente (exibidos em vermelho quando > 0)</td></tr>
+  <tr><td>Valor total</td><td>Original + juros + multa</td></tr>
+  <tr><td>Pago</td><td>Valor acumulado já pago</td></tr>
+  <tr><td>Saldo residual</td><td>Diferença entre valor total e pago</td></tr>
+  <tr><td>Status</td><td>A vencer, Pago, Parcialmente pago, Em atraso, Bloqueado</td></tr>
+  <tr><td>Omie</td><td>Status de sincronização com o Omie</td></tr>
+</table>
+
+<h3>Ações por Parcela</h3>
+<ul>
+  <li><strong>Realizar cobrança</strong> — Abre o modal de cobrança (disponível para parcelas não pagas e não bloqueadas)</li>
+  <li><strong>Histórico</strong> — Exibe o histórico de baixas da parcela</li>
+</ul>
+</div>
+
+<!-- 5. REALIZAR COBRANÇA -->
+<div class="page">
+<h1>5. Realizar Cobrança</h1>
+<p>O modal de cobrança é o fluxo principal de operação. Ele permite debitar o valor da parcela diretamente do saldo em conta do condomínio.</p>
+
+<h2>5.1. Informações Exibidas</h2>
+<p>O modal apresenta automaticamente (não editáveis): condomínio, CNPJ, número da parcela, data de vencimento, dias de atraso e saldo em conta.</p>
+
+<h2>5.2. Campos Financeiros</h2>
+<table class="field-table">
+  <tr><th>Campo</th><th>Editável?</th><th>Descrição</th></tr>
+  <tr><td>Valor original</td><td>Não</td><td>Valor nominal da parcela</td></tr>
+  <tr><td>Juros calculados</td><td><strong>Sim</strong></td><td>Edite para conceder isenção total ou parcial de juros</td></tr>
+  <tr><td>Multa calculada</td><td><strong>Sim</strong></td><td>Edite para conceder isenção total ou parcial de multa</td></tr>
+  <tr><td>Desconto</td><td><strong>Sim</strong></td><td>Valor de desconto adicional a aplicar</td></tr>
+  <tr><td>Valor total a cobrar</td><td>Não</td><td>Calculado automaticamente: original + juros + multa − desconto − já pago</td></tr>
+</table>
+
+<h2>5.3. Cenários de Cobrança</h2>
+
+<h3>Cenário 1: Cobrança Integral</h3>
+<div class="info-box">
+  Quando o <strong>saldo em conta ≥ valor total a cobrar</strong>. O sistema exibe mensagem verde confirmando saldo suficiente. Clique em <strong>"Realizar Cobrança Integral"</strong>.
+</div>
+
+<h3>Cenário 2: Cobrança Parcial</h3>
+<div class="step-box">
+  Quando o <strong>saldo em conta é menor que o valor total, mas maior que zero</strong>. O sistema exibe um alerta laranja informando saldo insuficiente. Você pode ajustar o valor do débito parcial. Após a baixa, a parcela ficará com status <span class="badge-demo badge-parcial">Parcialmente pago</span> e o saldo residual ficará visível.
+</div>
+
+<h3>Cenário 3: Sem Saldo</h3>
+<div class="warn-box">
+  Quando o <strong>saldo em conta = R$ 0,00</strong>. Não é possível debitar. A opção disponível é <strong>"Efetuar Baixa sem Cobrança"</strong> (apenas registra no sistema, sem movimentação financeira).
+</div>
+
+<h3>Cenário 4: Conta Bloqueada</h3>
+<div class="warn-box">
+  Se a conta estiver bloqueada, o sistema exibe um alerta vermelho com o motivo e <strong>impede qualquer tentativa de débito</strong>.
+</div>
+
+<h2>5.4. Confirmação</h2>
+<p>Antes de executar, o sistema exibe um modal de confirmação com:</p>
+<ul>
+  <li>Resumo completo da operação (condomínio, parcela, tipo, valor)</li>
+  <li>Checkbox <strong>"Baixar também no Omie"</strong> (marcado por padrão)</li>
+  <li>Botão "Confirmar" para executar</li>
+</ul>
+
+<h2>5.5. Após a Confirmação</h2>
+<ul>
+  <li>Toast de sucesso ou erro é exibido</li>
+  <li>A operação é registrada na timeline do contrato</li>
+  <li>O status da parcela é atualizado automaticamente</li>
+  <li>Se baixa parcial: parcela muda para "Parcialmente pago" com saldo residual</li>
+</ul>
+</div>
+
+<!-- 6. HISTÓRICO -->
+<div class="page">
+<h1>6. Histórico de Baixas</h1>
+<p>Cada parcela possui um histórico completo de todas as operações realizadas, acessível pelo botão <strong>"Histórico"</strong>.</p>
+
+<h2>6.1. Totais Exibidos</h2>
+<table class="field-table">
+  <tr><th>Indicador</th><th>Descrição</th></tr>
+  <tr><td>Total pago</td><td>Soma de todas as baixas realizadas nesta parcela</td></tr>
+  <tr><td>Saldo residual</td><td>Valor ainda pendente</td></tr>
+  <tr><td>Baixas realizadas</td><td>Quantidade de operações registradas</td></tr>
+</table>
+
+<h2>6.2. Timeline de Eventos</h2>
+<p>Cada evento na timeline registra:</p>
+<ul>
+  <li><strong>Data/hora</strong> da operação</li>
+  <li><strong>Tipo:</strong> Automática (sistema) ou Manual (operador)</li>
+  <li><strong>Operador:</strong> Quem realizou a operação</li>
+  <li><strong>Valor debitado</strong></li>
+  <li><strong>Juros, multa e desconto</strong> aplicados</li>
+  <li><strong>Saldo residual após</strong> a operação</li>
+  <li><strong>Status Omie:</strong> Se a baixa foi sincronizada</li>
+</ul>
+
+<div class="info-box">
+  <strong>Auditoria:</strong> Toda operação é rastreável — quem fez, quando e o quê. Use o histórico para auditorias e conferências.
+</div>
+</div>
+
+<!-- 7. CONCILIAÇÃO -->
+<div class="page">
+<h1>7. Conciliação (CondoSuite × Omie)</h1>
+<p>A aba Conciliação permite verificar se os dados entre o CondoSuite e o Omie estão sincronizados.</p>
+
+<h2>7.1. Indicadores</h2>
+<table class="field-table">
+  <tr><th>Indicador</th><th>Descrição</th></tr>
+  <tr><td>Sincronizadas (%)</td><td>Percentual de parcelas sem divergência</td></tr>
+  <tr><td>Divergentes</td><td>Parcelas com diferença entre os dois sistemas</td></tr>
+  <tr><td>Não sincronizadas</td><td>Parcelas que não constam no Omie</td></tr>
+</table>
+
+<h2>7.2. Filtros</h2>
+<ul>
+  <li><strong>Filtrar sincronização:</strong> Divergente ou Sincronizado</li>
+  <li><strong>Período (De / Até):</strong> Filtra por data — os indicadores recalculam conforme filtros</li>
+</ul>
+
+<h2>7.3. Tabela de Conciliação</h2>
+<p>Cada linha mostra: condomínio, contrato, parcela, status no CondoSuite, status no Omie, se há divergência, e os valores em cada sistema.</p>
+
+<h3>Ação: Sincronizar</h3>
+<p>Para parcelas divergentes, o botão <strong>"Sincronizar"</strong> dispara a reconciliação entre os sistemas.</p>
+</div>
+
+<!-- 8. RELATÓRIOS -->
+<div class="page">
+<h1>8. Relatórios</h1>
+<p>A aba Relatórios permite exportar dados para análise externa.</p>
+
+<h2>8.1. Relatório de Baixas por Período</h2>
+<p><strong>Filtros:</strong> Condomínio, tipo de baixa (integral/parcial), status, período.</p>
+<p><strong>Colunas:</strong> Condomínio, Contrato, Parcela, Vencimento, Data de pagamento, Valor original, Encargos, Valor pago, Saldo residual, Tipo de baixa, Operador.</p>
+
+<h2>8.2. Relatório de Fechamento para Cessionário</h2>
+<p><strong>Filtros:</strong> Carteira/Fundo, mês de referência.</p>
+<p><strong>Colunas:</strong> Carteira, Data do repasse, Contratos, Valor repassado, Saldo residual pendente.</p>
+
+<h2>8.3. Formatos de Exportação</h2>
+<p>Ambos os relatórios podem ser exportados em:</p>
+<ul>
+  <li><strong>CSV</strong> — Para importação em outros sistemas</li>
+  <li><strong>XLSX</strong> — Para análise em planilhas</li>
+  <li><strong>PDF</strong> — Para impressão e arquivo</li>
+</ul>
+</div>
+
+<!-- 9. GLOSSÁRIO -->
+<div class="page">
+<h1>9. Glossário de Status</h1>
+
+<h2>Status do Contrato</h2>
+<table class="field-table">
+  <tr><th>Status</th><th>Visual</th><th>Significado</th></tr>
+  <tr><td>Ativo</td><td><span class="badge-demo badge-ativo">Ativo</span></td><td>Contrato em vigor com parcelas em dia</td></tr>
+  <tr><td>Em atraso</td><td><span class="badge-demo badge-atraso">Em atraso</span></td><td>Contrato com uma ou mais parcelas vencidas</td></tr>
+  <tr><td>Encerrado</td><td><span class="badge-demo badge-encerrado">Encerrado</span></td><td>Todas as parcelas foram quitadas</td></tr>
+  <tr><td>Bloqueado</td><td><span class="badge-demo badge-bloqueado">Bloqueado</span></td><td>Conta do condomínio bloqueada — débitos impedidos</td></tr>
+</table>
+
+<h2>Status da Parcela</h2>
+<table class="field-table">
+  <tr><th>Status</th><th>Visual</th><th>Significado</th></tr>
+  <tr><td>A vencer</td><td><span class="badge-demo badge-avencer">A vencer</span></td><td>Parcela com vencimento futuro</td></tr>
+  <tr><td>Pago</td><td><span class="badge-demo badge-pago">Pago</span></td><td>Parcela integralmente quitada</td></tr>
+  <tr><td>Parcialmente pago</td><td><span class="badge-demo badge-parcial">Parcialmente pago</span></td><td>Baixa parcial — saldo residual pendente</td></tr>
+  <tr><td>Em atraso</td><td><span class="badge-demo badge-atraso">Em atraso</span></td><td>Vencida e não paga — juros e multa se aplicam</td></tr>
+  <tr><td>Bloqueado</td><td><span class="badge-demo badge-bloqueado">Bloqueado</span></td><td>Conta bloqueada — débito não permitido</td></tr>
+</table>
+
+<h2>Status Omie</h2>
+<table class="field-table">
+  <tr><th>Status</th><th>Ícone</th><th>Significado</th></tr>
+  <tr><td>Sincronizado</td><td>✅</td><td>Dados iguais nos dois sistemas</td></tr>
+  <tr><td>Divergente</td><td>⚠️</td><td>Diferença detectada — requer verificação</td></tr>
+  <tr><td>Não sincronizado</td><td>❌</td><td>Parcela não consta no Omie</td></tr>
+</table>
+</div>
+
+<!-- 10. FAQ -->
+<div class="page">
+<h1>10. Perguntas Frequentes</h1>
+
+<h3>Posso isentar juros e multa de uma parcela?</h3>
+<p>Sim. No modal de cobrança, os campos de juros e multa são editáveis. Altere para R$ 0,00 para isenção total, ou ajuste para isenção parcial.</p>
+
+<h3>O que acontece se eu fizer uma cobrança parcial?</h3>
+<p>A parcela muda para o status "Parcialmente pago". O saldo residual ficará visível na tabela de parcelas e poderá ser cobrado posteriormente.</p>
+
+<h3>O que é "Baixa sem Cobrança"?</h3>
+<p>É um registro no sistema sem movimentação financeira. Use quando o pagamento foi feito por fora (depósito, transferência externa) e você precisa apenas atualizar o status no CondoSuite.</p>
+
+<h3>Como sei se o Omie está atualizado?</h3>
+<p>Verifique a coluna "Omie" na tabela de parcelas, ou acesse a aba Conciliação para uma visão completa de sincronização.</p>
+
+<h3>O que fazer quando aparece "Conta Bloqueada"?</h3>
+<p>Contratos com conta bloqueada não permitem débito. O motivo do bloqueio é exibido no alerta. Encaminhe para o supervisor (Mateus) para avaliação e desbloqueio.</p>
+
+<h3>Posso exportar dados para enviar ao cessionário?</h3>
+<p>Sim. Use a aba Relatórios → "Fechamento para cessionário". Filtre por carteira e mês, e exporte em CSV, XLSX ou PDF.</p>
+
+<h3>As operações são auditáveis?</h3>
+<p>Sim. Toda operação registra: quem fez (operador), quando (data/hora), o que fez (tipo, valores, desconto). Acesse pelo botão "Histórico" em qualquer parcela.</p>
+
+<div class="footer">
+  CondoSuite — Manual de Gestão de Financiamentos v1.0 — Abril 2026<br>
+  Documento interno — Equipe de Tesouraria
+</div>
+</div>
+
+<script>
+  // Auto-print after fonts load
+  document.fonts.ready.then(() => {
+    setTimeout(() => { window.print(); }, 500);
+  });
+</script>
+</body>
+</html>

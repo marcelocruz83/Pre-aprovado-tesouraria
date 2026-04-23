@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CondoSuite — Crédito Pré-Aprovado</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body { font-family: 'DM Sans', -apple-system, sans-serif; background: #f5f6f8; color: #111827; -webkit-font-smoothing: antialiased; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    table { font-variant-numeric: tabular-nums; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="data.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel" src="tela1-lista.jsx"></script>
+  <script type="text/babel" src="tela2-detalhe.jsx"></script>
+  <script type="text/babel" src="tela3-cobranca.jsx"></script>
+  <script type="text/babel" src="tela4-historico.jsx"></script>
+  <script type="text/babel" src="tela5-6.jsx"></script>
+  <script type="text/babel">
+    // Placeholder screens for non-Contratos tabs
+    function PlaceholderTab({ title }) {
+      return (
+        <div style={{ padding: 60, textAlign: 'center', color: '#9ca3af' }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🚧</div>
+          <div style={{ fontSize: 15, fontWeight: 500 }}>{title}</div>
+          <div style={{ fontSize: 13, marginTop: 4 }}>Esta aba já existe no CondoSuite atual</div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [mainTab, setMainTab] = React.useState(() => localStorage.getItem('cs_maintab') || 'contratos');
+      const [subTab, setSubTab] = React.useState(() => localStorage.getItem('cs_subtab') || 'lista');
+      const [selectedCond, setSelectedCond] = React.useState(() => {
+        const s = localStorage.getItem('cs_cond');
+        return s ? Number(s) : null;
+      });
+      const [viewingDetalhe, setViewingDetalhe] = React.useState(false);
+      const [cobrancaData, setCobrancaData] = React.useState(null);
+      const [historicoData, setHistoricoData] = React.useState(null);
+      const [toast, setToast] = React.useState(null);
+
+      React.useEffect(() => { localStorage.setItem('cs_maintab', mainTab); }, [mainTab]);
+      React.useEffect(() => { localStorage.setItem('cs_subtab', subTab); }, [subTab]);
+      React.useEffect(() => { if (selectedCond) localStorage.setItem('cs_cond', selectedCond); }, [selectedCond]);
+
+      const selectCond = (id) => { setSelectedCond(id); setViewingDetalhe(true); };
+      const goBackToList = () => { setViewingDetalhe(false); setSelectedCond(null); };
+      const openCobranca = (cond, parcela) => setCobrancaData({ cond, parcela });
+      const openHistorico = (cond, parcela) => setHistoricoData({ cond, parcela });
+      const handleCobrancaSuccess = (msg) => { setCobrancaData(null); setToast({ message: msg, type: 'success' }); };
+
+      const handleMainTabChange = (tab) => {
+        setMainTab(tab);
+        setViewingDetalhe(false);
+      };
+
+      return (
+        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+          <SidebarMin />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <TopBar />
+            <div style={{ flex: 1, overflow: 'auto' }}>
+              {/* Page header */}
+              <div style={{ padding: '24px 32px 0' }}>
+                <h1 style={{ fontSize: 22, fontWeight: 700, color: '#111827', margin: 0 }}>Crédito Pré-Aprovado</h1>
+                <p style={{ fontSize: 13.5, color: '#6b7280', margin: '4px 0 16px' }}>Gestão da carteira de crédito pré-aprovado do time de Crédito & Risco</p>
+                <MainTabs active={mainTab} onChange={handleMainTabChange} />
+              </div>
+
+              {/* Tab content */}
+              <div style={{ padding: '24px 32px' }}>
+                {mainTab === 'visogeral' && <PlaceholderTab title="Visão Geral" />}
+                {mainTab === 'filacr' && <PlaceholderTab title="Fila C&R" />}
+                {mainTab === 'condomnios' && <PlaceholderTab title="Condomínios" />}
+                {mainTab === 'contratos' && (
+                  <div>
+                    {!viewingDetalhe && (
+                      <>
+                        <SubTabs active={subTab} onChange={setSubTab} />
+                        {subTab === 'lista' && <TelaLista onSelectCond={selectCond} />}
+                        {subTab === 'conciliacao' && <TelaConciliacao />}
+                        {subTab === 'relatorios' && <TelaRelatorios />}
+                      </>
+                    )}
+                    {viewingDetalhe && selectedCond && (
+                      <TelaDetalhe condId={selectedCond} onBack={goBackToList} onCobranca={openCobranca} onHistorico={openHistorico} />
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {cobrancaData && <TelaCobranca cond={cobrancaData.cond} parcela={cobrancaData.parcela} onClose={() => setCobrancaData(null)} onSuccess={handleCobrancaSuccess} />}
+          {historicoData && <TelaHistorico cond={historicoData.cond} parcela={historicoData.parcela} onClose={() => setHistoricoData(null)} />}
+          {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
